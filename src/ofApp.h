@@ -48,6 +48,7 @@ class ofApp : public ofBaseApp{
 	ofxButton gridConfigButton;
 
 	vector<string> params;
+	
 
 	bool guiEnabled;
 		

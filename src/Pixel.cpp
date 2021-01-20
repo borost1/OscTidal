@@ -8,6 +8,7 @@ void Pixel::setup(int gridSize, int gridDimension){
 	color = ofColor::white;
 	mode = 0;
 	boundary = 255;
+	updating = true;
 	mat.setDiffuseColor(color);
 	mat.setAmbientColor(color);
 	mat.setSpecularColor(color);
@@ -15,9 +16,12 @@ void Pixel::setup(int gridSize, int gridDimension){
 }
 
 void Pixel::update() {
-	if (triggerValue > 1) {
-		triggerValue *= 0.95;
+	if(updating){
+		if (triggerValue > 1) {
+			triggerValue *= 0.95;
+		}
 	}
+	
 }
 
 void Pixel::setColor(ofColor c) {

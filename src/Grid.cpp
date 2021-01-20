@@ -83,10 +83,12 @@ void Grid::midPointDiagonalTrigger(int x0, int y0, int radius, float amount, int
 }
 
 void Grid::midPointSquareTrigger(int x0, int y0, int len, float amount, int mode, string color) {
-	
+	int shift = static_cast<int>(len / 2);
 	for (int x = 0; x < len; x++) {
 		for (int y = 0; y < len; y++) {
-			trigger(x0 + x, y0 + y, amount, mode, color);
+			if ((x == 0 || x == len - 1) || (y == 0 || y == len - 1)) {
+				trigger(x0 + x - shift, y0 + y - shift, amount, mode, color);
+			}	
 		}
 	}
 
@@ -95,6 +97,89 @@ void Grid::midPointSquareTrigger(int x0, int y0, int len, float amount, int mode
 
 void Grid::midPointCircleTrigger(int x0, int y0, int radius) {
 	/*TODO*/
+}
+
+void Grid::midPointEllipseTrigger(int rx, int ry, int xc, int yc, float amount, int mode, string color) {
+	float dx, dy, d1, d2, x, y;
+	x = 0;
+	y = ry;
+
+	d1 = (ry * ry)
+		- (rx * rx * ry)
+		+ (0.25 * rx * rx);
+	dx = 2 * ry * ry * x;
+	dy = 2 * rx * rx * y;
+
+	while (dx < dy) {
+
+
+		trigger(x + xc, y + yc, amount, mode, color);
+		trigger(-x + xc, y + yc, amount, mode, color);
+		trigger(x + xc, -y + yc, amount, mode, color);
+		trigger(-x + xc, -y + yc, amount, mode, color);
+
+
+		if (d1 < 0) {
+			x++;
+			dx = dx + (2 * ry * ry);
+			d1 = d1 + dx + (ry * ry);
+		}
+		else {
+			x++;
+			y--;
+			dx = dx + (2 * ry * ry);
+			dy = dy - (2 * rx * rx);
+			d1 = d1 + dx - dy + (ry * ry);
+		}
+	}
+
+
+	d2 = ((ry * ry) * ((x + 0.5) * (x + 0.5)))
+		+ ((rx * rx) * ((y - 1) * (y - 1)))
+		- (rx * rx * ry * ry);
+
+
+	while (y >= 0) {
+
+
+		trigger(x + xc, y + yc, amount, mode, color);
+		trigger(-x + xc, y + yc, amount, mode, color);
+		trigger(x + xc, -y + yc, amount, mode, color);
+		trigger(-x + xc, -y + yc, amount, mode, color);
+
+
+		if (d2 > 0) {
+			y--;
+			dy = dy - (2 * rx * rx);
+			d2 = d2 + (rx * rx) - dy;
+		}
+		else {
+			y--;
+			x++;
+			dx = dx + (2 * ry * ry);
+			dy = dy - (2 * rx * rx);
+			d2 = d2 + dx - dy + (rx * rx);
+		}
+	}
+}
+
+void Grid::lineTrigger(int x1, int y1, int x2, int y2, float amount, int mode, string color) {
+	int m_new = 2 * (y2 - y1);
+	int slope_error_new = m_new - (x2 - x1);
+	for (int x = x1, y = y1; x <= x2; x++)
+	{
+		cout << "(" << x << "," << y << ")\n";
+		trigger(x, y, amount, mode, color);
+
+
+		slope_error_new += m_new;
+
+		if (slope_error_new >= 0)
+		{
+			y++;
+			slope_error_new -= 2 * (x2 - x1);
+		}
+	}
 }
 
 void Grid::update() {

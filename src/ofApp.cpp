@@ -59,7 +59,10 @@ void ofApp::update(){
 		if (m.getAddress() == "/play2") {
 			int x = -1;
 			int y = -1;
+			int x2 = -1;
+			int y2 = -1;
 			int rad = 0;
+			int rad2 = 0;
 			float gain = 1;
 			int target = 0;
 			int mode = -1;
@@ -78,14 +81,25 @@ void ofApp::update(){
 					params.push_back(m.getArgAsString(i) + ": " + m.getArgAsString(i + 1) + ", ");
 				}
 
+				//rework this part
+
 				if (m.getArgAsString(i) == "x") {
 					x = m.getArgAsInt(i + 1);
 				}
 				else if (m.getArgAsString(i) == "y") {
 					y = m.getArgAsInt(i + 1);
 				}
+				else if (m.getArgAsString(i) == "x2") {
+					x2 = m.getArgAsInt(i + 1);
+				}
+				else if (m.getArgAsString(i) == "y2") {
+					y2 = m.getArgAsInt(i + 1);
+				}
 				else if (m.getArgAsString(i) == "rad") {
 					rad = m.getArgAsInt(i + 1);
+				}
+				else if (m.getArgAsString(i) == "rad2") {
+					rad2 = m.getArgAsInt(i + 1);
 				}
 				else if (m.getArgAsString(i) == "gain") {
 					gain = m.getArgAsFloat(i + 1);
@@ -112,6 +126,12 @@ void ofApp::update(){
 			}
 			else if (shape == "square") {
 				grids[target].midPointSquareTrigger(x, y, rad, amount, mode, color);
+			}
+			else if (shape == "ellipse") {
+				grids[target].midPointEllipseTrigger(rad, rad2, x, y, amount, mode, color);
+			}
+			else if (shape == "line") {
+				grids[target].lineTrigger(x, y, x2, y2, amount, mode, color);
 			}
 			
 			
@@ -182,24 +202,6 @@ void ofApp::draw(){
 
 	if (guiEnabled) {
 		gui.draw();
-		/*
-		ofPushMatrix();
-		ofTranslate(ofGetWidth() / 2 + ofGetWidth() / 8, 0);
-		ofSetColor(0);
-		ofFill();
-		ofDrawRectangle(0, 0, 3 * ofGetWidth() / 8, ofGetHeight()/2);
-		ofNoFill();
-		ofSetColor(255, 255, 255);
-		string fstring = "";
-		for (int i = 0; i < params.size(); i++) {
-			fstring += params[i];
-			if (i % 5 == 0) {
-				fstring += "\n";
-			}
-		}
-		ofDrawBitmapString(fstring, 10, 20);
-		ofPopMatrix();
-		*/
 	}
 
 	

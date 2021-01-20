@@ -19,6 +19,7 @@ class Pixel
 		int mode = 0;
 		int boundary;
 		void setColor(ofColor color);
+		bool updating = true;
 
 	Pixel();
 };
