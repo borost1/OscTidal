@@ -17,7 +17,6 @@ class Grid
 		void midPointSquareTrigger(int x0, int y0, int length, float amount, int mode, string color);
 		void midPointEllipseTrigger(int rx, int ry, int xc, int yc, float amount, int mode, string color);
 		void lineTrigger(int x0, int y0, int x1, int y1, float amount, int mode, string color);
-		void receiveParams(vector<string> params);
 		void update();
 		void draw();
 		void setMode();

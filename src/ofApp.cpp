@@ -12,6 +12,7 @@ void ofApp::setup(){
 	gridConfigButton.addListener(this, &ofApp::gridConfigButtonPressed);
 
 	gui.setup();
+	
 	gui.add(uiPosition.set("position", ofVec3f(600, 600, 600), ofVec3f(-3000, -3000, -3000), ofVec3f(3000, 3000, 3000)));
 	gui.add(gridSize.set("gridSize", 64,10,256));
 	gui.add(gridDimension.set("gridDimension", 1000, 100, 4000));
@@ -23,6 +24,8 @@ void ofApp::setup(){
 		grid.setup(gridSize, gridDimension);
 		grids.push_back(grid);
 	}
+
+	manager.grids = &grids;
 	
 	post.init(ofGetWidth(), ofGetHeight());
 	
@@ -57,84 +60,13 @@ void ofApp::update(){
 		ofxOscMessage m;
 		osc.getNextMessage(m);
 		if (m.getAddress() == "/play2") {
-			int x = -1;
-			int y = -1;
-			int x2 = -1;
-			int y2 = -1;
-			int rad = 0;
-			int rad2 = 0;
-			float gain = 1;
-			int target = 0;
-			int mode = -1;
-			string shape = "circle";
-			string color = "";
+			map<string, string> paramMap;
 			
 			for (int i = 0; i < m.getNumArgs(); i += 2) {
-				
-				//std::cout << "arg: " << m.getArgAsString(i) << ": " << m.getArgAsString(i + 1) << "\n";
-
-				if (params.size() < 200) {
-					params.push_back(m.getArgAsString(i) + ": " + m.getArgAsString(i + 1) + ". ");
-				}
-				else {
-					params.erase(params.begin(),params.begin()+1);
-					params.push_back(m.getArgAsString(i) + ": " + m.getArgAsString(i + 1) + ", ");
-				}
-
-				//rework this part
-
-				if (m.getArgAsString(i) == "x") {
-					x = m.getArgAsInt(i + 1);
-				}
-				else if (m.getArgAsString(i) == "y") {
-					y = m.getArgAsInt(i + 1);
-				}
-				else if (m.getArgAsString(i) == "x2") {
-					x2 = m.getArgAsInt(i + 1);
-				}
-				else if (m.getArgAsString(i) == "y2") {
-					y2 = m.getArgAsInt(i + 1);
-				}
-				else if (m.getArgAsString(i) == "rad") {
-					rad = m.getArgAsInt(i + 1);
-				}
-				else if (m.getArgAsString(i) == "rad2") {
-					rad2 = m.getArgAsInt(i + 1);
-				}
-				else if (m.getArgAsString(i) == "gain") {
-					gain = m.getArgAsFloat(i + 1);
-				}
-				else if (m.getArgAsString(i) == "target") {
-					target = m.getArgAsFloat(i + 1);
-					if (target > grids.size() -1) {
-						target = grids.size() - 1;
-					}
-				}
-				else if (m.getArgAsString(i) == "type") {
-					shape = m.getArgAsString(i + 1);
-				}
-				else if (m.getArgAsString(i) == "mode") {
-					mode = m.getArgAsInt(i + 1);
-				}
-				else if (m.getArgAsString(i) == "color") {
-					color = m.getArgAsString(i + 1);
-				}
+				paramMap[m.getArgAsString(i)] = m.getArgAsString(i + 1);
 			}
-			float amount = ofMap(gain, 0, 1, 0, 255);
-			if (shape == "circle") {
-				grids[target].midPointDiagonalTrigger(x, y, rad, amount, mode, color);
-			}
-			else if (shape == "square") {
-				grids[target].midPointSquareTrigger(x, y, rad, amount, mode, color);
-			}
-			else if (shape == "ellipse") {
-				grids[target].midPointEllipseTrigger(rad, rad2, x, y, amount, mode, color);
-			}
-			else if (shape == "line") {
-				grids[target].lineTrigger(x, y, x2, y2, amount, mode, color);
-			}
-			
-			
+			manager.receiveParams(paramMap);
+			paramMap.clear();
 		}
 	}
 
@@ -144,8 +76,6 @@ void ofApp::update(){
 		grid.update();
 	};
 
-	//cam.setPosition(ofMap(sin(ofGetElapsedTimef()),-1,1,-1300,1300), ofMap(cos(ofGetElapsedTimef()), -1, 1, -1300, 1300), 1300);
-	//cam.lookAt(ofVec3f(0, 0, 0));
 }
 
 //--------------------------------------------------------------
@@ -176,25 +106,6 @@ void ofApp::draw(){
 	
 	grids[2].draw();
 	ofPopMatrix();
-	/*
-	ofPushMatrix();
-	ofTranslate(ofGetWidth() / 2 + ofGetWidth() / 8, 0);
-	ofSetColor(0);
-	ofFill();
-	ofDrawRectangle(0, 0, 3 * ofGetWidth() / 8, ofGetHeight() / 2);
-	ofNoFill();
-	ofSetColor(255, 255, 255);
-	string fstring = "";
-	for (int i = 0; i < params.size(); i++) {
-		fstring += params[i];
-		if (i % 5 == 0) {
-			fstring += "\n";
-		}
-	}
-	ofDrawBitmapString(fstring, 10, 20);
-	ofPopMatrix();
-	*/
-	
 	
 	post.end();
 	light.disable();
@@ -202,6 +113,8 @@ void ofApp::draw(){
 
 	if (guiEnabled) {
 		gui.draw();
+		ofSetColor(ofColor::red);
+		ofDrawBitmapString("FPS: " + to_string(ofGetFrameRate()), 10, 700);
 	}
 
 	

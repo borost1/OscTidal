@@ -160,6 +160,9 @@
     <ClCompile Include="src\Pixel.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\oscManager.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -390,6 +393,9 @@
       <Filter>addons\ofxPostProcessing-master\src</Filter>
     </ClInclude>
     <ClInclude Include="src\Pixel.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\oscManager.h">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>

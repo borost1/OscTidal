@@ -234,6 +234,7 @@
     <ClCompile Include="..\..\..\addons\ofxPostProcessing-master\src\ToonPass.cpp" />
     <ClCompile Include="..\..\..\addons\ofxPostProcessing-master\src\VerticalTiltShifPass.cpp" />
     <ClCompile Include="..\..\..\addons\ofxPostProcessing-master\src\ZoomBlurPass.cpp" />
+    <ClCompile Include="src\oscManager.cpp" />
     <ClCompile Include="src\Pixel.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -297,6 +298,7 @@
     <ClInclude Include="..\..\..\addons\ofxPostProcessing-master\src\ToonPass.h" />
     <ClInclude Include="..\..\..\addons\ofxPostProcessing-master\src\VerticalTiltShifPass.h" />
     <ClInclude Include="..\..\..\addons\ofxPostProcessing-master\src\ZoomBlurPass.h" />
+    <ClInclude Include="src\oscManager.h" />
     <ClInclude Include="src\Pixel.h" />
   </ItemGroup>
   <ItemGroup>

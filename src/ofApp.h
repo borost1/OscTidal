@@ -6,7 +6,7 @@
 #include "ofxPostProcessing.h"
 #include "Grid.h"
 #include "Pixel.h"
-#include <stack>
+#include "oscManager.h"
 
 #define PORT 50500
 
@@ -29,17 +29,17 @@ class ofApp : public ofBaseApp{
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
 		void gridConfigButtonPressed();
+		vector<Grid> grids;
 
 	ofxOscReceiver osc;
 
-	vector<Grid> grids;
+	
 
-	//Grid grid;
-	//Grid grid2;
-	//Grid grid3;
 	ofEasyCam cam;
 	ofLight light;
 	ofxPostProcessing post;
+
+	ofFpsCounter fpsCounter;
 
 	ofxPanel gui;
 	ofParameter <ofVec3f> uiPosition;
@@ -48,6 +48,7 @@ class ofApp : public ofBaseApp{
 	ofxButton gridConfigButton;
 
 	vector<string> params;
+	oscManager manager;
 	
 
 	bool guiEnabled;
