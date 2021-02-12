@@ -34,8 +34,8 @@ void oscManager::receiveParams(map<string, string> params) {
 			triggerParams["x"], 
 			triggerParams["y"], 
 			amount, 
-			triggerParams["mode"], 
-			color
+			intParams,
+			stringParams
 		);
 	}
 	else if (type == "ellipse") {
@@ -45,8 +45,8 @@ void oscManager::receiveParams(map<string, string> params) {
 			triggerParams["x"],
 			triggerParams["y"],
 			amount,
-			triggerParams["mode"],
-			color
+			intParams,
+			stringParams
 		);
 	}
 	else if (type == "square") {
@@ -55,8 +55,8 @@ void oscManager::receiveParams(map<string, string> params) {
 			triggerParams["y"],
 			triggerParams["rad"],
 			amount,
-			triggerParams["mode"],
-			color
+			intParams,
+			stringParams
 		);
 	}
 	else if (type == "line") {

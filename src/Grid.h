@@ -13,10 +13,10 @@ class Grid
 		void resize(int dim, int s);
 		void trigger(int x, int y, float amount, int mode, string color);
 		void trigger(int x, int y, float amount, map<string, int> intParams, map<string, string> stringParams);
-		void midPointDiagonalTrigger(int x0, int y0, int radius, float amount, int mode, string color);
+		void midPointDiagonalTrigger(int x0, int y0, int radius, float amount, map<string, int> intParams, map<string, string> stringParams);
 		void midPointCircleTrigger(int x0, int y0, int radius);
-		void midPointSquareTrigger(int x0, int y0, int length, float amount, int mode, string color);
-		void midPointEllipseTrigger(int rx, int ry, int xc, int yc, float amount, int mode, string color);
+		void midPointSquareTrigger(int x0, int y0, int length, float amount, map<string, int> intParams, map<string, string> stringParams);
+		void midPointEllipseTrigger(int rx, int ry, int xc, int yc, float amount, map<string, int> intParams, map<string, string> stringParams);
 		void lineTrigger(int x0, int y0, int x1, int y1, float amount, int mode, string color);
 		void update();
 		void draw();

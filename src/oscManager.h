@@ -22,16 +22,19 @@ public:
 		{"y2", -1},
 		{"rad", 0},
 		{"rad2", 0},
-		{"mode", 0},
 		{"target", 0}
 	};
 
 	map<string, int> defaultIntParams{
-		{"mode", 0}
+		{"mode", 0},
+		{"red", -1},
+		{"green", -1},
+		{"blue", -1}
 	};
 
 	map<string, string> defaultStringParams{
-		{"color", "white"}
+		{"color", "white"},
+		{"updating", "true"}
 	};
 
 };

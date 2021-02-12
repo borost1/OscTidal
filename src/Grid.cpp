@@ -39,7 +39,7 @@ void Grid::resize(int dim, int s) {
 
 }
 
-
+//obsolete stuff
 void Grid::trigger(int x, int y, float amount, int m, string color) {
 	if ((-1 < x) and (x < dimension) and (-1 < y) and (y < dimension)) {
 		gridData[x][y].trigger(amount);
@@ -55,25 +55,43 @@ void Grid::trigger(int x, int y, float amount, int m, string color) {
 void Grid::trigger(int x, int y, float amount, map<string, int> intParams, map<string, string> stringParams) {
 	if ((-1 < x) and (x < dimension) and (-1 < y) and (y < dimension)) {
 		gridData[x][y].trigger(amount);
+
+		gridData[x][y].mode = intParams["mode"];
 		
+		// test for updating
+		if (stringParams["updating"] == "true") {
+			gridData[x][y].updating = true;
+		}
+		else {
+			gridData[x][y].updating = false;
+		}
+
+		// set color based on tidal syntax
+		if (intParams["red"] > -1 and intParams["green"] > -1 and intParams["blue"] > -1) {
+			gridData[x][y].setColor(ofColor(intParams["red"], intParams["green"], intParams["blue"]));
+		}
+		else {
+			gridData[x][y].setColor(colorMap[stringParams["color"]]);
+		}
+
 	}
 }
 
-void Grid::midPointDiagonalTrigger(int x0, int y0, int radius, float amount, int m, string color) {
+void Grid::midPointDiagonalTrigger(int x0, int y0, int radius, float amount, map<string, int> intParams, map<string, string> stringParams) {
 	int x = radius;
 	int y = 0;
 	int err = 0;
 
 	while (x >= y)
 	{
-		trigger(x0 + x, y0 + y, amount, m, color);
-		trigger(x0 + y, y0 + x, amount, m, color);
-		trigger(x0 - y, y0 + x, amount, m, color);
-		trigger(x0 - x, y0 + y, amount, m, color);
-		trigger(x0 - x, y0 - y, amount, m, color);
-		trigger(x0 - y, y0 - x, amount, m, color);
-		trigger(x0 + y, y0 - x, amount, m, color);
-		trigger(x0 + x, y0 - y, amount, m, color);
+		trigger(x0 + x, y0 + y, amount, intParams, stringParams);
+		trigger(x0 + y, y0 + x, amount, intParams, stringParams);
+		trigger(x0 - y, y0 + x, amount, intParams, stringParams);
+		trigger(x0 - x, y0 + y, amount, intParams, stringParams);
+		trigger(x0 - x, y0 - y, amount, intParams, stringParams);
+		trigger(x0 - y, y0 - x, amount, intParams, stringParams);
+		trigger(x0 + y, y0 - x, amount, intParams, stringParams);
+		trigger(x0 + x, y0 - y, amount, intParams, stringParams);
 
 		if (err <= 0)
 		{
@@ -89,12 +107,12 @@ void Grid::midPointDiagonalTrigger(int x0, int y0, int radius, float amount, int
 	}
 }
 
-void Grid::midPointSquareTrigger(int x0, int y0, int len, float amount, int mode, string color) {
+void Grid::midPointSquareTrigger(int x0, int y0, int len, float amount, map<string, int> intParams, map<string, string> stringParams) {
 	int shift = static_cast<int>(len / 2);
 	for (int x = 0; x < len; x++) {
 		for (int y = 0; y < len; y++) {
 			if ((x == 0 || x == len - 1) || (y == 0 || y == len - 1)) {
-				trigger(x0 + x - shift, y0 + y - shift, amount, mode, color);
+				trigger(x0 + x - shift, y0 + y - shift, amount, intParams, stringParams);
 			}	
 		}
 	}
@@ -106,7 +124,7 @@ void Grid::midPointCircleTrigger(int x0, int y0, int radius) {
 	/*TODO*/
 }
 
-void Grid::midPointEllipseTrigger(int rx, int ry, int xc, int yc, float amount, int mode, string color) {
+void Grid::midPointEllipseTrigger(int rx, int ry, int xc, int yc, float amount, map<string, int> intParams, map<string, string> stringParams) {
 	float dx, dy, d1, d2, x, y;
 	x = 0;
 	y = ry;
@@ -120,10 +138,10 @@ void Grid::midPointEllipseTrigger(int rx, int ry, int xc, int yc, float amount, 
 	while (dx < dy) {
 
 
-		trigger(x + xc, y + yc, amount, mode, color);
-		trigger(-x + xc, y + yc, amount, mode, color);
-		trigger(x + xc, -y + yc, amount, mode, color);
-		trigger(-x + xc, -y + yc, amount, mode, color);
+		trigger(x + xc, y + yc, amount, intParams, stringParams);
+		trigger(-x + xc, y + yc, amount, intParams, stringParams);
+		trigger(x + xc, -y + yc, amount, intParams, stringParams);
+		trigger(-x + xc, -y + yc, amount, intParams, stringParams);
 
 
 		if (d1 < 0) {
@@ -149,10 +167,10 @@ void Grid::midPointEllipseTrigger(int rx, int ry, int xc, int yc, float amount, 
 	while (y >= 0) {
 
 
-		trigger(x + xc, y + yc, amount, mode, color);
-		trigger(-x + xc, y + yc, amount, mode, color);
-		trigger(x + xc, -y + yc, amount, mode, color);
-		trigger(-x + xc, -y + yc, amount, mode, color);
+		trigger(x + xc, y + yc, amount, intParams, stringParams);
+		trigger(-x + xc, y + yc, amount, intParams, stringParams);
+		trigger(x + xc, -y + yc, amount, intParams, stringParams);
+		trigger(-x + xc, -y + yc, amount, intParams, stringParams);
 
 
 		if (d2 > 0) {
