@@ -52,6 +52,13 @@ void Grid::trigger(int x, int y, float amount, int m, string color) {
 	}	
 }
 
+void Grid::trigger(int x, int y, float amount, map<string, int> intParams, map<string, string> stringParams) {
+	if ((-1 < x) and (x < dimension) and (-1 < y) and (y < dimension)) {
+		gridData[x][y].trigger(amount);
+		
+	}
+}
+
 void Grid::midPointDiagonalTrigger(int x0, int y0, int radius, float amount, int m, string color) {
 	int x = radius;
 	int y = 0;

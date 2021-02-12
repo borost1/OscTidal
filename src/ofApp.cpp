@@ -88,6 +88,7 @@ void ofApp::draw(){
 	
 	
 	if (guiEnabled) {
+		ofSetColor(ofColor::white);
 		ofDrawSphere(uiPosition->x, uiPosition->y, uiPosition->z, 32);
 	}
 	//ofRotateY(20 * ofGetElapsedTimef());
@@ -131,46 +132,6 @@ void ofApp::keyPressed(int key){
 		}
 	}
 
-	if (key == 't') {
-		grids[0].midPointSquareTrigger(10, 10, 1, 10, 0, "");
-	}
-
-
-	if (key == 'a') {
-		std::cout << "cam target:" << cam.getX() << ", " << cam.getY() << ", " << cam.getZ();
-	}
-	if (key == 's') {
-		if (grids[0].mode < 4) {
-			grids[0].mode++;
-			grids[0].setMode();
-		}
-		else {
-			grids[0].mode = 0;
-			grids[0].setMode();
-		}
-	}
-
-	if (key == 'd') {
-		if (grids[1].mode < 4) {
-			grids[1].mode++;
-			grids[1].setMode();
-		}
-		else {
-			grids[1].mode = 0;
-			grids[1].setMode();
-		}
-	}
-
-	if (key == 'f') {
-		if (grids[2].mode < 4) {
-			grids[2].mode++;
-			grids[2].setMode();
-		}
-		else {
-			grids[2].mode = 0;
-			grids[2].setMode();
-		}
-	}
 
 	if (key == 'g') {
 		if (grids[0].gridVisibility) {

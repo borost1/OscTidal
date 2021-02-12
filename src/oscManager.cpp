@@ -4,9 +4,19 @@
 void oscManager::receiveParams(map<string, string> params) {
 	
 	map<string, int> triggerParams;
+	map<string, int> intParams;
+	map<string, string> stringParams;
 	
-	for (const auto& kv : defaultValues) {
+	for (const auto& kv : defaultTriggerValues) {
 		triggerParams.insert(pair<string, int>(kv.first, matchParam(params, kv.first, kv.second)));
+	}
+
+	for (const auto& kv : defaultIntParams) {
+		intParams.insert(pair<string, int>(kv.first, matchParam(params, kv.first, kv.second)));
+	}
+
+	for (const auto& kv : defaultStringParams) {
+		stringParams.insert(pair<string, string>(kv.first, matchParam(params, kv.first, kv.second)));
 	}
 	
 	string type = matchParam(params, "type", "circle");
