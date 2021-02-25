@@ -20,6 +20,12 @@ class Pixel
 		int boundary;
 		void setColor(ofColor color);
 		bool updating = true;
+		string primitive = "box";
+		int primResolution = 6;
+		int rotateX;
+		int rotateY;
+		int rotateZ;
+		int z;
 
 	Pixel();
 };

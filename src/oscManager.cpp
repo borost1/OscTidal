@@ -19,48 +19,64 @@ void oscManager::receiveParams(map<string, string> params) {
 		stringParams.insert(pair<string, string>(kv.first, matchParam(params, kv.first, kv.second)));
 	}
 	
+	string targetSystem = matchParam(params, "sys", "grid");
 	string type = matchParam(params, "type", "circle");
 	string color = matchParam(params, "color", "white");
+	int target = matchParam(params, "target", 0);
 	float gain = matchParamf(params, "gain", 1.0);
 
 	// TODO: this must be temporary!!!
 	float amount = ofMap(gain, 0, 1, 0, 255);
 
-
-	if (type == "circle") {
-		(*grids)[triggerParams["target"]].midPointEllipseTrigger(
-			triggerParams["rad"], 
-			triggerParams["rad"], 
-			triggerParams["x"], 
-			triggerParams["y"], 
-			amount, 
-			intParams,
-			stringParams
-		);
+	if (targetSystem == "grid") {
+		if (type == "circle") {
+			(*grids)[target].midPointEllipseTrigger(
+				triggerParams["rad"],
+				triggerParams["rad"],
+				triggerParams["x"],
+				triggerParams["y"],
+				amount,
+				intParams,
+				stringParams
+			);
+		}
+		else if (type == "ellipse") {
+			(*grids)[target].midPointEllipseTrigger(
+				triggerParams["rad"],
+				triggerParams["rad2"],
+				triggerParams["x"],
+				triggerParams["y"],
+				amount,
+				intParams,
+				stringParams
+			);
+		}
+		else if (type == "square") {
+			(*grids)[target].midPointSquareTrigger(
+				triggerParams["x"],
+				triggerParams["y"],
+				triggerParams["rad"],
+				amount,
+				intParams,
+				stringParams
+			);
+		}
+		else if (type == "diagonal") {
+			(*grids)[target].midPointDiagonalTrigger(
+				triggerParams["x"],
+				triggerParams["y"],
+				triggerParams["rad"],
+				amount,
+				intParams,
+				stringParams
+			);
+		}
+		else if (type == "line") {
+			cout << "line TODO\n";
+		}
 	}
-	else if (type == "ellipse") {
-		(*grids)[triggerParams["target"]].midPointEllipseTrigger(
-			triggerParams["rad"],
-			triggerParams["rad2"],
-			triggerParams["x"],
-			triggerParams["y"],
-			amount,
-			intParams,
-			stringParams
-		);
-	}
-	else if (type == "square") {
-		(*grids)[triggerParams["target"]].midPointSquareTrigger(
-			triggerParams["x"],
-			triggerParams["y"],
-			triggerParams["rad"],
-			amount,
-			intParams,
-			stringParams
-		);
-	}
-	else if (type == "line") {
-		cout << "line TODO\n";
+	else if (targetSystem == "cam") {
+		((ofApp*)ofGetAppPtr())->setCamPos(triggerParams["x"], triggerParams["y"], triggerParams["rad"]);
 	}
 
 	triggerParams.clear();

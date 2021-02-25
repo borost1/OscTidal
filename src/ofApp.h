@@ -29,13 +29,11 @@ class ofApp : public ofBaseApp{
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
 		void gridConfigButtonPressed();
+		void setCamPos(float x, float y, float z);
 		vector<Grid> grids;
-
-	ofxOscReceiver osc;
-
+		ofEasyCam cam;
 	
-
-	ofEasyCam cam;
+	ofxOscReceiver osc;
 	ofLight light;
 	ofxPostProcessing post;
 

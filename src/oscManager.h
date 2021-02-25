@@ -15,26 +15,33 @@ public:
 
 	vector<Grid> *grids = reinterpret_cast<vector<Grid>*>(ofGetAppPtr());
 	
+	
 	map<string, int> defaultTriggerValues{
 		{"x", -1},
 		{"y", -1},
 		{"x2", -1},
 		{"y2", -1},
 		{"rad", 0},
-		{"rad2", 0},
-		{"target", 0}
+		{"rad2", 0}
 	};
 
 	map<string, int> defaultIntParams{
 		{"mode", 0},
 		{"red", -1},
 		{"green", -1},
-		{"blue", -1}
+		{"blue", -1},
+		{"primres", 6},
+		{"boundary", 255},
+		{"z", 0},
+		{"rotateX", 0},
+		{"rotateY", 0},
+		{"rotateZ", 0}
 	};
 
 	map<string, string> defaultStringParams{
 		{"color", "white"},
-		{"updating", "true"}
+		{"updating", "true"},
+		{"primitive", "box"}
 	};
 
 };

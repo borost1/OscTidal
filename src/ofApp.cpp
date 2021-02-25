@@ -210,3 +210,9 @@ void ofApp::gotMessage(ofMessage msg){
 void ofApp::dragEvent(ofDragInfo dragInfo){ 
 
 }
+
+//--------------------------------------------------------------
+void ofApp::setCamPos(float x, float y, float z) {
+	cam.setPosition(x, y, z);
+	cam.lookAt(ofVec3f(0, 0, 0));
+}

@@ -57,6 +57,13 @@ void Grid::trigger(int x, int y, float amount, map<string, int> intParams, map<s
 		gridData[x][y].trigger(amount);
 
 		gridData[x][y].mode = intParams["mode"];
+		gridData[x][y].primitive = stringParams["primitive"];
+		gridData[x][y].primResolution = intParams["primres"];
+		gridData[x][y].boundary = intParams["boundary"];
+		gridData[x][y].z = intParams["z"];
+		gridData[x][y].rotateX = intParams["rotateX"];
+		gridData[x][y].rotateY = intParams["rotateY"];
+		gridData[x][y].rotateZ = intParams["rotateZ"];
 		
 		// test for updating
 		if (stringParams["updating"] == "true") {
