@@ -105,7 +105,45 @@ let setI = streamSetI tidal
     setB = streamSetB tidal
 :}
 
-let m = degradeBy 1
+-- these are the low level parameters that define the coordinates, the target grid, the shape radius, color etc.
+:{
+let x = pI "x"
+    y = pI "y"
+    x2 = pI "x2"
+    y2 = pI "y2"
+    rad = pI "rad"
+    rad2 = pI "rad2"
+    target = pI "target"
+    t = pS "type"
+    mode = pI "mode"
+    color = pS "color"
+    red = pI "red"
+    green = pI "green"
+    blue = pI "blue"
+    updating = pS "updating"
+    primitive = pS "primitive"
+    primres = pI "primres"
+    boundary = pI "boundary"
+    rotateX = pI "rotateX"
+    rotateY = pI "rotateY"
+    rotateZ = pI "rotateZ"
+    z = pI "z"
+    sys = pS "sys"
+    m = degradeBy 1
+    shiftBy n = (n <~)
+    shrand n = shiftBy n $ rand
+:}
+
+-- these are the more complex functions that make coding much more simple
+:{
+let circle xpos ypos radius p = ((# x xpos) . (# y ypos) . (# rad radius) . (# t "circle")) $ p
+    ellipse xpos ypos xradius yradius p = ((# x xpos) . (# y ypos) . (# rad xradius) . (# rad2 yradius) . (# t "ellipse")) $ p
+    sqr xpos ypos radius p = ((# x xpos) . (# y ypos) . (# rad radius) . (# t "square")) $ p
+    line xpos ypos xpos2 ypos2 p = ((# x xpos) . (# y ypos) . (# x2 xpos2) . (# y2 ypos2) . (# t "line")) $ p
+    rgb r g b p = ((# red r) . (# green g) . (# blue b)) $ p 
+    diag xpos ypos radius p = ((# x xpos) . (# y ypos) . (# rad radius) . (# t "diagonal")) $ p
+    rotate x y z p = ((# rotateX x) . (# rotateY y) . (# rotateZ z)) $ p
+:}
 
 :set prompt "tidal> "
 :set prompt-cont ""
