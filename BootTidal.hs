@@ -1,3 +1,4 @@
+:set -package hosc
 :set -XOverloadedStrings
 :set prompt ""
 
@@ -14,18 +15,18 @@ hSetEncoding stdout utf8
 -- total latency = oLatency + cFrameTimespan
 
 :{
-let target =
-      Target {oName = "visualiser",   -- A friendly name for the target (only used in error messages)
-              oAddress = "127.0.0.1", -- The target's network address, normally "localhost"
-              oPort = 50500,           -- The network port the target is listening on
-              oLatency = 0.2,         -- Additional delay, to smooth out network jitter/get things in sync
-              oSchedule = Live,       -- The scheduling method - see below
-              oWindow = Nothing       -- Not yet used
-             }
+let target = Target {oName = "visualiser",   -- A friendly name for the target (only used in error messages)
+                     oAddress = "127.0.0.1", -- The target's network address, normally "localhost"
+                     oPort = 50500,           -- The network port the target is listening on
+                     oLatency = 0.2,         -- Additional delay, to smooth out network jitter/get things in sync
+                     oSchedule = Live,       -- The scheduling method - see below
+                     oWindow = Nothing,       -- Not yet used
+                     oHandshake = False,
+                     oBusPort = Just 1
+                    }
     oscmap = [(target, [superdirtShape]),
               (superdirtTarget, [superdirtShape])
-            ]        
-    --d = streamReplace stream
+             ]        
 :}
 
 tidal <- startStream defaultConfig oscmap

@@ -59,7 +59,7 @@ void ofApp::update(){
 	while (osc.hasWaitingMessages()) {
 		ofxOscMessage m;
 		osc.getNextMessage(m);
-		if (m.getAddress() == "/play2") {
+		if (m.getAddress() == "/dirt/play") {
 			map<string, string> paramMap;
 			
 			for (int i = 0; i < m.getNumArgs(); i += 2) {
