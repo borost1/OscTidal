@@ -163,6 +163,9 @@
     <ClCompile Include="src\oscManager.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\PrimitiveDrawer.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -396,6 +399,9 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\oscManager.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\PrimitiveDrawer.h">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>

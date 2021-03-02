@@ -236,6 +236,7 @@
     <ClCompile Include="..\..\..\addons\ofxPostProcessing-master\src\ZoomBlurPass.cpp" />
     <ClCompile Include="src\oscManager.cpp" />
     <ClCompile Include="src\Pixel.cpp" />
+    <ClCompile Include="src\PrimitiveDrawer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\ofApp.h" />
@@ -300,6 +301,7 @@
     <ClInclude Include="..\..\..\addons\ofxPostProcessing-master\src\ZoomBlurPass.h" />
     <ClInclude Include="src\oscManager.h" />
     <ClInclude Include="src\Pixel.h" />
+    <ClInclude Include="src\PrimitiveDrawer.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="$(OF_ROOT)\libs\openFrameworksCompiled\project\vs\openframeworksLib.vcxproj">

@@ -65,6 +65,14 @@ void Grid::trigger(int x, int y, float amount, map<string, int> intParams, map<s
 		gridData[x][y].rotateY = intParams["rotateY"];
 		gridData[x][y].rotateZ = intParams["rotateZ"];
 		
+		//grid fill
+		if (stringParams["fill"] == "true") {
+			gridData[x][y].fill = true;
+		}
+		else {
+			gridData[x][y].fill = false;
+		}
+		
 		// test for updating
 		if (stringParams["updating"] == "true") {
 			gridData[x][y].updating = true;
@@ -232,12 +240,13 @@ void Grid::draw() {
 			ofTranslate(x * size / dimension, y * size / dimension);
 
 			//display grid if visible
+			
 			if (gridVisibility) {
 				ofNoFill();
-				ofSetColor(ofColor::white, 127);
+				ofSetColor(ofColor::white, 100);
 				ofDrawRectangle(0, 0, size / dimension, size / dimension);
 			}
-
+			
 			if (gridData[x][y].triggerValue > 0) {
 				gridData[x][y].draw();
 				

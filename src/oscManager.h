@@ -41,7 +41,8 @@ public:
 	map<string, string> defaultStringParams{
 		{"color", "white"},
 		{"updating", "true"},
-		{"primitive", "box"}
+		{"primitive", "box"},
+		{"fill", "true"}
 	};
 
 };

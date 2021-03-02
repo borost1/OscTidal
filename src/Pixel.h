@@ -10,6 +10,7 @@ class Pixel
 		void setup(int gridSize, int gridDimension);
 		void update();
 		void draw();
+		void drawPrimitive(string primitive, float initRot, int alpha);
 		void trigger(float amount);
 		float triggerValue = 0;
 		int size = 0;
@@ -25,7 +26,9 @@ class Pixel
 		int rotateX;
 		int rotateY;
 		int rotateZ;
+		string rotationCenter;
 		int z;
+		bool fill;
 
 	Pixel();
 };

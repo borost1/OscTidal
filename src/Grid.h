@@ -25,8 +25,24 @@ class Grid
 		int size;
 		int mode = 0;
 		bool gridVisibility = false;
+		struct basePixel {
+			int mode = 0;
+			int rotationX = 0;
+			int rotationY = 0;
+			int rotationZ = 0;
+			int boundary = 255;
+			int primitiveResolution = 6;
+			float z = 0;
+			bool fill = true;
+			bool updating = true;
+			string primitive = "box";
+			ofColor color = ofColor::white;
+			ofMaterial mat;
+		};
 	
 	vector<vector<Pixel>> gridData;
+
+	
 
 	map<string, ofColor> colorMap{
 	{"red", ofColor::red},

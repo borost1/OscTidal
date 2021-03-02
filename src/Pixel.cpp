@@ -15,6 +15,8 @@ void Pixel::setup(int gridSize, int gridDimension){
 	rotateX = 0;
 	rotateY = 0;
 	rotateZ = 0;
+	rotationCenter = "pixel";
+	fill = true;
 
 	mat.setDiffuseColor(color);
 	mat.setAmbientColor(color);
@@ -44,7 +46,12 @@ void Pixel::draw() {
 	switch (mode) {
 	case 0:
 		if (alpha > 1) {
-			ofFill();
+			if (fill) {
+				ofFill();
+			}
+			else {
+				ofNoFill();
+			}
 			ofSetColor(color, alpha);
 			ofTranslate((size / dimension) / 2, (size / dimension) / 2, z);
 
@@ -71,7 +78,12 @@ void Pixel::draw() {
 		break;
 	case 1:
 		ofTranslate((size / dimension) / 2, (size / dimension) / 2, z);
-		ofFill();
+		if (fill) {
+			ofFill();
+		}
+		else {
+			ofNoFill();
+		}
 		mat.begin();
 
 		ofRotateXDeg(rotateX*ofGetElapsedTimef());
@@ -93,79 +105,61 @@ void Pixel::draw() {
 		break;
 	case 2:
 		if (alpha > 1) {
+			
 			ofTranslate(0, 0, z);
-			ofFill();
-			mat.begin();
-
 			ofRotateXDeg(rotateX*ofGetElapsedTimef());
 			ofRotateYDeg(rotateY*ofGetElapsedTimef());
 			ofRotateZDeg(rotateZ*ofGetElapsedTimef());
-
-			if (primitive == "box") {
-				ofDrawBox(ofPoint(0, 0, 0), size / dimension + 1, size / dimension + 1, ofMap(alpha, 0, 255, 0, boundary));
-			}
-			else if(primitive == "cone") {
-				ofRotateXDeg(-90);
-				ofDrawCone(ofPoint(0, 0, 0), size / dimension + 1, ofMap(alpha, 0, 255, 0, boundary));
-			}
-			else if (primitive == "cylinder") {
-				ofRotateXDeg(-90);
-				ofDrawCylinder(ofPoint(0, 0, 0), size / dimension + 1, ofMap(alpha, 0, 255, 0, boundary));
-			}
-			mat.end();
+			drawPrimitive(primitive, -90, alpha);
 		}
 		break;
 	case 3:
 		if (alpha > 1) {
+			
 			ofTranslate((size / dimension) / 2, (size / dimension) / 2, ofMap(alpha, 0, 255, 0, boundary) / 2 + z);
-			ofFill();
-			mat.begin();
-
 			ofRotateXDeg(rotateX*ofGetElapsedTimef());
 			ofRotateYDeg(rotateY*ofGetElapsedTimef());
 			ofRotateZDeg(rotateZ*ofGetElapsedTimef());
-
-			if (primitive == "box") {
-				ofDrawBox(ofPoint(0, 0, 0), size / dimension + 1, size / dimension + 1, ofMap(alpha, 0, 255, 0, boundary));
-			}
-			else if (primitive == "cone") {
-				ofRotateXDeg(-90);
-				ofDrawCone(ofPoint(0, 0, 0), size / dimension + 1, ofMap(alpha, 0, 255, 0, boundary));
-			}
-			else if (primitive == "cylinder") {
-				ofRotateXDeg(-90);
-				ofDrawCylinder(ofPoint(0, 0, 0), size / dimension + 1, ofMap(alpha, 0, 255, 0, boundary));
-			}
-			mat.end();
+			drawPrimitive(primitive, -90, alpha);
 		}
 		break;
 	case 4:
 		if (alpha > 1) {
+			
 			ofTranslate((size / dimension) / 2, (size / dimension) / 2, ofMap(alpha, 0, 255, 0, -boundary) / 2 + z);
-			ofFill();
-			mat.begin();
-
 			ofRotateXDeg(rotateX*ofGetElapsedTimef());
 			ofRotateYDeg(rotateY*ofGetElapsedTimef());
 			ofRotateZDeg(rotateZ*ofGetElapsedTimef());
-
-			if (primitive == "box") {
-				ofDrawBox(ofPoint(0, 0, 0), size / dimension + 1, size / dimension + 1, ofMap(alpha, 0, 255, 0, boundary));
-			}
-			else if (primitive == "cone") {
-				ofRotateXDeg(90);
-				ofDrawCone(ofPoint(0, 0, 0), size / dimension + 1, ofMap(alpha, 0, 255, 0, boundary));
-			}
-			else if (primitive == "cylinder") {
-				ofRotateXDeg(90);
-				ofDrawCylinder(ofPoint(0, 0, 0), size / dimension + 1, ofMap(alpha, 0, 255, 0, boundary));
-			}
-			mat.end();
+			drawPrimitive(primitive, 90, alpha);
+			
 		}
 		break;
 	}
+}
 
-
+void Pixel::drawPrimitive(string primitive, float initRot, int alpha) {
+	if (fill) {
+		ofFill();
+	}
+	else {
+		ofNoFill();
+	}
+	mat.begin();
+	if (primitive == "box") {
+		ofDrawBox(ofPoint(0, 0, 0), size / dimension + 1, size / dimension + 1, ofMap(alpha, 0, 255, 0, boundary));
+	}
+	else if (primitive == "cone") {
+		ofRotateXDeg(initRot);
+		ofDrawCone(ofPoint(0, 0, 0), size / dimension + 1, ofMap(alpha, 0, 255, 0, boundary));
+	}
+	else if (primitive == "cylinder") {
+		ofRotateXDeg(initRot);
+		ofDrawCylinder(ofPoint(0, 0, 0), size / dimension + 1, ofMap(alpha, 0, 255, 0, boundary));
+	}
+	else if (primitive == "sphere") {
+		ofDrawSphere(ofMap(alpha, 0, 255, 0, boundary));
+	}
+	mat.end();
 }
 
 void Pixel::trigger(float amount) {
