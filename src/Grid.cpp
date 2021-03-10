@@ -9,16 +9,6 @@ void Grid::setup(int dim, int s) {
 	drawer.setup();
 
 	for (int x = 0; x < dimension; x++) {
-		vector<Pixel> vals;
-		for (int y = 0; y < dimension; y++) {
-			Pixel p;
-			p.setup(size, dimension);
-			vals.push_back(p);	
-		}
-		gridData.push_back(vals);
-	}
-
-	for (int x = 0; x < dimension; x++) {
 		vector<PrimitiveDrawer::basePixel> vals;
 		for (int y = 0; y < dimension; y++) {
 			PrimitiveDrawer::basePixel p;
@@ -34,20 +24,10 @@ void Grid::setup(int dim, int s) {
 
 void Grid::resize(int dim, int s) {
 
-	gridData.clear();
+	baseGridData.clear();
 
 	dimension = dim;
 	size = s;
-
-	for (int x = 0; x < dimension; x++) {
-		vector<Pixel> vals;
-		for (int y = 0; y < dimension; y++) {
-			Pixel p;
-			p.setup(size, dimension);
-			vals.push_back(p);
-		}
-		gridData.push_back(vals);
-	}
 
 	for (int x = 0; x < dimension; x++) {
 		vector<PrimitiveDrawer::basePixel> vals;
@@ -62,57 +42,7 @@ void Grid::resize(int dim, int s) {
 
 }
 
-//obsolete stuff
-void Grid::trigger(int x, int y, float amount, int m, string color) {
-	if ((-1 < x) and (x < dimension) and (-1 < y) and (y < dimension)) {
-		gridData[x][y].trigger(amount);
-		if (m > -1) {
-			gridData[x][y].mode = m;
-		}
-		if (color != "") {
-			gridData[x][y].setColor(colorMap[color]);
-		}
-	}
-}
-
 void Grid::trigger(int x, int y, float amount, map<string, int> intParams, map<string, string> stringParams) {
-	if ((-1 < x) and (x < dimension) and (-1 < y) and (y < dimension)) {
-		gridData[x][y].trigger(amount);
-
-		gridData[x][y].mode = intParams["mode"];
-		gridData[x][y].primitive = stringParams["primitive"];
-		gridData[x][y].primResolution = intParams["primres"];
-		gridData[x][y].boundary = intParams["boundary"];
-		gridData[x][y].z = intParams["z"];
-		gridData[x][y].rotateX = intParams["rotateX"];
-		gridData[x][y].rotateY = intParams["rotateY"];
-		gridData[x][y].rotateZ = intParams["rotateZ"];
-		
-		//grid fill
-		if (stringParams["fill"] == "true") {
-			gridData[x][y].fill = true;
-		}
-		else {
-			gridData[x][y].fill = false;
-		}
-		
-		// test for updating
-		if (stringParams["updating"] == "true") {
-			gridData[x][y].updating = true;
-		}
-		else {
-			gridData[x][y].updating = false;
-		}
-
-		// set color based on tidal syntax
-		if (intParams["red"] > -1 and intParams["green"] > -1 and intParams["blue"] > -1) {
-			gridData[x][y].setColor(ofColor(intParams["red"], intParams["green"], intParams["blue"]));
-		}
-		else {
-			gridData[x][y].setColor(colorMap[stringParams["color"]]);
-		}
-
-	}
 
 	if ((-1 < x) and (x < dimension) and (-1 < y) and (y < dimension)) {
 		baseGridData[x][y].triggerValue = amount;
@@ -265,32 +195,10 @@ void Grid::midPointEllipseTrigger(int rx, int ry, int xc, int yc, float amount, 
 }
 
 void Grid::lineTrigger(int x1, int y1, int x2, int y2, float amount, int mode, string color) {
-	int m_new = 2 * (y2 - y1);
-	int slope_error_new = m_new - (x2 - x1);
-	for (int x = x1, y = y1; x <= x2; x++)
-	{
-		cout << "(" << x << "," << y << ")\n";
-		trigger(x, y, amount, mode, color);
-
-
-		slope_error_new += m_new;
-
-		if (slope_error_new >= 0)
-		{
-			y++;
-			slope_error_new -= 2 * (x2 - x1);
-		}
-	}
+	//TODO
 }
 
 void Grid::update() {
-	
-	for (int x = 0; x < dimension; x++) {
-		for (int y = 0; y < dimension; y++) {
-			gridData[x][y].update();
-		}	
-	}
-
 	for (int x = 0; x < dimension; x++) {
 		for (int y = 0; y < dimension; y++) {
 			baseGridData[x][y].triggerValue *= 0.95;
@@ -346,13 +254,5 @@ void Grid::draw() {
 	}
 
 	ofDisableAlphaBlending();
-}
-
-void Grid::setMode() {
-	for (int x = 0; x < dimension; x++) {
-		for (int y = 0; y < dimension; y++) {
-			gridData[x][y].mode = mode;
-		}
-	}
 }
 

@@ -25,14 +25,16 @@ public:
 		ofMaterial mat;
 	};
 	void setup();
-	void update();
-	void draw(basePixel& basePixel);
-	bool isNewSetup(basePixel& basePixel);
+	void update(const basePixel& basePixel);
+	void draw(const basePixel& basePixel);
+	void drawPrimitive(const basePixel& basePixel, float initRot, int alpha);
+	bool isNewSetup(const basePixel& basePixel);
 
 string primitive;
 int primitiveResolution;
 ofColor color;
 ofMaterial mat;
+bool fill;
 PrimitiveDrawer();
 
 };

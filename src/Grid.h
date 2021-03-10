@@ -12,7 +12,6 @@ class Grid
 	public:
 		void setup(int dim, int s);
 		void resize(int dim, int s);
-		void trigger(int x, int y, float amount, int mode, string color);
 		void trigger(int x, int y, float amount, map<string, int> intParams, map<string, string> stringParams);
 		void midPointDiagonalTrigger(int x0, int y0, int radius, float amount, map<string, int> intParams, map<string, string> stringParams);
 		void midPointCircleTrigger(int x0, int y0, int radius);
@@ -21,14 +20,11 @@ class Grid
 		void lineTrigger(int x0, int y0, int x1, int y1, float amount, int mode, string color);
 		void update();
 		void draw();
-		void setMode();
 		int dimension;
 		int size;
 		int mode = 0;
 		bool gridVisibility = false;
-		
 	
-	vector<vector<Pixel>> gridData;
 	vector<vector<PrimitiveDrawer::basePixel>> baseGridData;
 	PrimitiveDrawer drawer;
 	
