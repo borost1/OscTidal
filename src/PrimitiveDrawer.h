@@ -1,19 +1,41 @@
 #pragma once
-
+#ifndef _PRIMITIVEDRAWER
+#define _PRIMITIVEDRAWER
 #include "ofMain.h"
-#include "Grid.h"
 
 class PrimitiveDrawer
 {
 public:
+	struct basePixel {
+		int mode = 0;
+		int size = 0;
+		int dimension = 0;
+		int rotationX = 0;
+		int rotationY = 0;
+		int rotationZ = 0;
+		int boundayMin = 0;
+		int boundaryMax = 255;
+		int primitiveResolution = 6;
+		float z = 0;
+		float triggerValue = 0;
+		bool fill = true;
+		bool updating = true;
+		string primitive = "box";
+		ofColor color = ofColor::white;
+		ofMaterial mat;
+	};
 	void setup();
 	void update();
-	void draw(Grid::basePixel basePixel);
+	void draw(basePixel& basePixel);
+	bool isNewSetup(basePixel& basePixel);
 
+string primitive;
 int primitiveResolution;
 ofColor color;
 ofMaterial mat;
 PrimitiveDrawer();
-struct basePixel {} pixel;
+
 };
+
+#endif
 

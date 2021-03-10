@@ -6,6 +6,7 @@ Grid::Grid() {}
 void Grid::setup(int dim, int s) {
 	dimension = dim;
 	size = s;
+	drawer.setup();
 
 	for (int x = 0; x < dimension; x++) {
 		vector<Pixel> vals;
@@ -15,6 +16,17 @@ void Grid::setup(int dim, int s) {
 			vals.push_back(p);	
 		}
 		gridData.push_back(vals);
+	}
+
+	for (int x = 0; x < dimension; x++) {
+		vector<PrimitiveDrawer::basePixel> vals;
+		for (int y = 0; y < dimension; y++) {
+			PrimitiveDrawer::basePixel p;
+			p.size = size;
+			p.dimension = dimension;
+			vals.push_back(p);
+		}
+		baseGridData.push_back(vals);
 	}
 
 }
@@ -37,6 +49,17 @@ void Grid::resize(int dim, int s) {
 		gridData.push_back(vals);
 	}
 
+	for (int x = 0; x < dimension; x++) {
+		vector<PrimitiveDrawer::basePixel> vals;
+		for (int y = 0; y < dimension; y++) {
+			PrimitiveDrawer::basePixel p;
+			p.size = size;
+			p.dimension = dimension;
+			vals.push_back(p);
+		}
+		baseGridData.push_back(vals);
+	}
+
 }
 
 //obsolete stuff
@@ -49,7 +72,7 @@ void Grid::trigger(int x, int y, float amount, int m, string color) {
 		if (color != "") {
 			gridData[x][y].setColor(colorMap[color]);
 		}
-	}	
+	}
 }
 
 void Grid::trigger(int x, int y, float amount, map<string, int> intParams, map<string, string> stringParams) {
@@ -87,6 +110,44 @@ void Grid::trigger(int x, int y, float amount, map<string, int> intParams, map<s
 		}
 		else {
 			gridData[x][y].setColor(colorMap[stringParams["color"]]);
+		}
+
+	}
+
+	if ((-1 < x) and (x < dimension) and (-1 < y) and (y < dimension)) {
+		baseGridData[x][y].triggerValue = amount;
+
+		baseGridData[x][y].mode = intParams["mode"];
+		baseGridData[x][y].primitive = stringParams["primitive"];
+		baseGridData[x][y].primitiveResolution = intParams["primres"];
+		baseGridData[x][y].boundaryMax = intParams["boundary"];
+		baseGridData[x][y].z = intParams["z"];
+		baseGridData[x][y].rotationX = intParams["rotateX"];
+		baseGridData[x][y].rotationY = intParams["rotateY"];
+		baseGridData[x][y].rotationZ = intParams["rotateZ"];
+
+		//grid fill
+		if (stringParams["fill"] == "true") {
+			baseGridData[x][y].fill = true;
+		}
+		else {
+			baseGridData[x][y].fill = false;
+		}
+
+		// test for updating
+		if (stringParams["updating"] == "true") {
+			baseGridData[x][y].updating = true;
+		}
+		else {
+			baseGridData[x][y].updating = false;
+		}
+
+		// set color based on tidal syntax
+		if (intParams["red"] > -1 and intParams["green"] > -1 and intParams["blue"] > -1) {
+			baseGridData[x][y].color = ofColor(intParams["red"], intParams["green"], intParams["blue"]);
+		}
+		else {
+			baseGridData[x][y].color = colorMap[stringParams["color"]];
 		}
 
 	}
@@ -229,11 +290,18 @@ void Grid::update() {
 			gridData[x][y].update();
 		}	
 	}
+
+	for (int x = 0; x < dimension; x++) {
+		for (int y = 0; y < dimension; y++) {
+			baseGridData[x][y].triggerValue *= 0.95;
+		}
+	}
 }
 
 void Grid::draw() {
 	ofEnableAlphaBlending();
 	//ofRotateY(20 * ofGetElapsedTimef());
+	/*
 	for (int x = 0; x < dimension; x++) {
 		for (int y = 0; y < dimension; y++) {		
 			ofPushMatrix();
@@ -254,6 +322,29 @@ void Grid::draw() {
 			ofPopMatrix();
 		}
 	}
+	*/
+
+	for (int x = 0; x < dimension; x++) {
+		for (int y = 0; y < dimension; y++) {
+			ofPushMatrix();
+			ofTranslate(x * size / dimension, y * size / dimension);
+
+			//display grid if visible
+
+			if (gridVisibility) {
+				ofNoFill();
+				ofSetColor(ofColor::white, 100);
+				ofDrawRectangle(0, 0, size / dimension, size / dimension);
+			}
+
+			if (baseGridData[x][y].triggerValue > 0) {
+				drawer.draw(baseGridData[x][y]);
+
+			}
+			ofPopMatrix();
+		}
+	}
+
 	ofDisableAlphaBlending();
 }
 
