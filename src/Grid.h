@@ -2,7 +2,6 @@
 #ifndef _GRID
 #define _GRID
 
-#include "Pixel.h"
 #include "PrimitiveDrawer.h"
 #include "ofMain.h"
 

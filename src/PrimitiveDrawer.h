@@ -18,6 +18,7 @@ public:
 		int primitiveResolution = 6;
 		float z = 0;
 		float triggerValue = 0;
+		float decay = 0.95;
 		bool fill = true;
 		bool updating = true;
 		string primitive = "box";
@@ -35,6 +36,7 @@ int primitiveResolution;
 ofColor color;
 ofMaterial mat;
 bool fill;
+
 PrimitiveDrawer();
 
 };

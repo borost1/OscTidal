@@ -45,6 +45,11 @@ public:
 		{"fill", "true"}
 	};
 
+	map<string, float> defaultFloatParams{
+		{"gain", 1.0},
+		{"amount", 1.0}
+	};
+
 };
 
 # endif

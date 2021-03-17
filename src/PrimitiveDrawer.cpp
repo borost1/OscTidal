@@ -17,8 +17,7 @@ void PrimitiveDrawer::update(const basePixel& basePixel) {
 	primitive = basePixel.primitive;
 	primitiveResolution = basePixel.primitiveResolution;
 	fill = basePixel.fill;
-	if (fill) { ofFill(); }
-	else { ofNoFill(); }
+	
 	color = basePixel.color;
 	mat.setDiffuseColor(color);
 	mat.setAmbientColor(color);
@@ -34,6 +33,10 @@ void PrimitiveDrawer::draw(const basePixel& basePixel) {
 	if (isNewSetup(basePixel)) {
 		update(basePixel);
 	}
+
+	if (basePixel.fill) { ofFill(); }
+	else { ofNoFill(); }
+
 	float alpha = static_cast<int>(basePixel.triggerValue);
 	if (alpha > 1) {
 		switch (basePixel.mode) {

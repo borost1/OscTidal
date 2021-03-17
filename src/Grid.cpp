@@ -1,5 +1,4 @@
 #include "Grid.h"
-#include "Pixel.h"
 
 Grid::Grid() {}
 
@@ -208,37 +207,10 @@ void Grid::update() {
 
 void Grid::draw() {
 	ofEnableAlphaBlending();
-	//ofRotateY(20 * ofGetElapsedTimef());
-	/*
-	for (int x = 0; x < dimension; x++) {
-		for (int y = 0; y < dimension; y++) {		
-			ofPushMatrix();
-			ofTranslate(x * size / dimension, y * size / dimension);
-
-			//display grid if visible
-			
-			if (gridVisibility) {
-				ofNoFill();
-				ofSetColor(ofColor::white, 100);
-				ofDrawRectangle(0, 0, size / dimension, size / dimension);
-			}
-			
-			if (gridData[x][y].triggerValue > 0) {
-				gridData[x][y].draw();
-				
-			}
-			ofPopMatrix();
-		}
-	}
-	*/
-
 	for (int x = 0; x < dimension; x++) {
 		for (int y = 0; y < dimension; y++) {
 			ofPushMatrix();
 			ofTranslate(x * size / dimension, y * size / dimension);
-
-			//display grid if visible
-
 			if (gridVisibility) {
 				ofNoFill();
 				ofSetColor(ofColor::white, 100);
@@ -252,7 +224,6 @@ void Grid::draw() {
 			ofPopMatrix();
 		}
 	}
-
 	ofDisableAlphaBlending();
 }
 

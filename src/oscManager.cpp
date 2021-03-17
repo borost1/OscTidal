@@ -6,6 +6,7 @@ void oscManager::receiveParams(map<string, string> params) {
 	map<string, int> triggerParams;
 	map<string, int> intParams;
 	map<string, string> stringParams;
+	map<string, float> floatParams;
 	
 	for (const auto& kv : defaultTriggerValues) {
 		triggerParams.insert(pair<string, int>(kv.first, matchParam(params, kv.first, kv.second)));
@@ -17,6 +18,10 @@ void oscManager::receiveParams(map<string, string> params) {
 
 	for (const auto& kv : defaultStringParams) {
 		stringParams.insert(pair<string, string>(kv.first, matchParam(params, kv.first, kv.second)));
+	}
+
+	for (const auto& kv : defaultFloatParams) {
+		floatParams.insert(pair<string, float>(kv.first, matchParam(params, kv.first, kv.second)));
 	}
 	
 	string targetSystem = matchParam(params, "sys", "grid");

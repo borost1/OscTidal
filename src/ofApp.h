@@ -5,7 +5,6 @@
 #include "ofxGui.h"
 #include "ofxPostProcessing.h"
 #include "Grid.h"
-#include "Pixel.h"
 #include "oscManager.h"
 
 #define PORT 50500
