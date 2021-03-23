@@ -64,6 +64,7 @@ void ofApp::update(){
 			
 			for (int i = 0; i < m.getNumArgs(); i += 2) {
 				paramMap[m.getArgAsString(i)] = m.getArgAsString(i + 1);
+				//cout << m.getArgAsString(i) << ": " << m.getArgAsString(i + 1) << "\n";
 			}
 			manager.receiveParams(paramMap);
 			paramMap.clear();

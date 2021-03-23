@@ -41,15 +41,16 @@ void Grid::resize(int dim, int s) {
 
 }
 
-void Grid::trigger(int x, int y, float amount, map<string, int> intParams, map<string, string> stringParams) {
+void Grid::trigger(int x, int y, map<string, float> floatParams, map<string, int> intParams, map<string, string> stringParams) {
 
 	if ((-1 < x) and (x < dimension) and (-1 < y) and (y < dimension)) {
-		baseGridData[x][y].triggerValue = amount;
-
+		baseGridData[x][y].length = floatParams["length"];
+		baseGridData[x][y].triggerValue = ofMap(floatParams["gain"], 0, 1, intParams["boundMin"], intParams["boundMax"] * floatParams["gain"]);
 		baseGridData[x][y].mode = intParams["mode"];
 		baseGridData[x][y].primitive = stringParams["primitive"];
 		baseGridData[x][y].primitiveResolution = intParams["primres"];
-		baseGridData[x][y].boundaryMax = intParams["boundary"];
+		baseGridData[x][y].boundaryMax = intParams["boundMin"];
+		baseGridData[x][y].boundaryMax = intParams["boundMax"];
 		baseGridData[x][y].z = intParams["z"];
 		baseGridData[x][y].rotationX = intParams["rotateX"];
 		baseGridData[x][y].rotationY = intParams["rotateY"];
@@ -82,21 +83,21 @@ void Grid::trigger(int x, int y, float amount, map<string, int> intParams, map<s
 	}
 }
 
-void Grid::midPointDiagonalTrigger(int x0, int y0, int radius, float amount, map<string, int> intParams, map<string, string> stringParams) {
+void Grid::midPointDiagonalTrigger(int x0, int y0, int radius, map<string, float> floatParams, map<string, int> intParams, map<string, string> stringParams) {
 	int x = radius;
 	int y = 0;
 	int err = 0;
 
 	while (x >= y)
 	{
-		trigger(x0 + x, y0 + y, amount, intParams, stringParams);
-		trigger(x0 + y, y0 + x, amount, intParams, stringParams);
-		trigger(x0 - y, y0 + x, amount, intParams, stringParams);
-		trigger(x0 - x, y0 + y, amount, intParams, stringParams);
-		trigger(x0 - x, y0 - y, amount, intParams, stringParams);
-		trigger(x0 - y, y0 - x, amount, intParams, stringParams);
-		trigger(x0 + y, y0 - x, amount, intParams, stringParams);
-		trigger(x0 + x, y0 - y, amount, intParams, stringParams);
+		trigger(x0 + x, y0 + y, floatParams, intParams, stringParams);
+		trigger(x0 + y, y0 + x, floatParams, intParams, stringParams);
+		trigger(x0 - y, y0 + x, floatParams, intParams, stringParams);
+		trigger(x0 - x, y0 + y, floatParams, intParams, stringParams);
+		trigger(x0 - x, y0 - y, floatParams, intParams, stringParams);
+		trigger(x0 - y, y0 - x, floatParams, intParams, stringParams);
+		trigger(x0 + y, y0 - x, floatParams, intParams, stringParams);
+		trigger(x0 + x, y0 - y, floatParams, intParams, stringParams);
 
 		if (err <= 0)
 		{
@@ -112,12 +113,12 @@ void Grid::midPointDiagonalTrigger(int x0, int y0, int radius, float amount, map
 	}
 }
 
-void Grid::midPointSquareTrigger(int x0, int y0, int len, float amount, map<string, int> intParams, map<string, string> stringParams) {
+void Grid::midPointSquareTrigger(int x0, int y0, int len, map<string, float> floatParams, map<string, int> intParams, map<string, string> stringParams) {
 	int shift = static_cast<int>(len / 2);
 	for (int x = 0; x < len; x++) {
 		for (int y = 0; y < len; y++) {
 			if ((x == 0 || x == len - 1) || (y == 0 || y == len - 1)) {
-				trigger(x0 + x - shift, y0 + y - shift, amount, intParams, stringParams);
+				trigger(x0 + x - shift, y0 + y - shift, floatParams, intParams, stringParams);
 			}	
 		}
 	}
@@ -129,7 +130,7 @@ void Grid::midPointCircleTrigger(int x0, int y0, int radius) {
 	/*TODO*/
 }
 
-void Grid::midPointEllipseTrigger(int rx, int ry, int xc, int yc, float amount, map<string, int> intParams, map<string, string> stringParams) {
+void Grid::midPointEllipseTrigger(int rx, int ry, int xc, int yc, map<string, float> floatParams, map<string, int> intParams, map<string, string> stringParams) {
 	float dx, dy, d1, d2, x, y;
 	x = 0;
 	y = ry;
@@ -143,10 +144,10 @@ void Grid::midPointEllipseTrigger(int rx, int ry, int xc, int yc, float amount, 
 	while (dx < dy) {
 
 
-		trigger(x + xc, y + yc, amount, intParams, stringParams);
-		trigger(-x + xc, y + yc, amount, intParams, stringParams);
-		trigger(x + xc, -y + yc, amount, intParams, stringParams);
-		trigger(-x + xc, -y + yc, amount, intParams, stringParams);
+		trigger(x + xc, y + yc, floatParams, intParams, stringParams);
+		trigger(-x + xc, y + yc, floatParams, intParams, stringParams);
+		trigger(x + xc, -y + yc, floatParams, intParams, stringParams);
+		trigger(-x + xc, -y + yc, floatParams, intParams, stringParams);
 
 
 		if (d1 < 0) {
@@ -172,10 +173,10 @@ void Grid::midPointEllipseTrigger(int rx, int ry, int xc, int yc, float amount, 
 	while (y >= 0) {
 
 
-		trigger(x + xc, y + yc, amount, intParams, stringParams);
-		trigger(-x + xc, y + yc, amount, intParams, stringParams);
-		trigger(x + xc, -y + yc, amount, intParams, stringParams);
-		trigger(-x + xc, -y + yc, amount, intParams, stringParams);
+		trigger(x + xc, y + yc, floatParams, intParams, stringParams);
+		trigger(-x + xc, y + yc, floatParams, intParams, stringParams);
+		trigger(x + xc, -y + yc, floatParams, intParams, stringParams);
+		trigger(-x + xc, -y + yc, floatParams, intParams, stringParams);
 
 
 		if (d2 > 0) {
@@ -200,7 +201,7 @@ void Grid::lineTrigger(int x1, int y1, int x2, int y2, float amount, int mode, s
 void Grid::update() {
 	for (int x = 0; x < dimension; x++) {
 		for (int y = 0; y < dimension; y++) {
-			baseGridData[x][y].triggerValue *= 0.95;
+			baseGridData[x][y].triggerValue *= baseGridData[x][y].length;
 		}
 	}
 }

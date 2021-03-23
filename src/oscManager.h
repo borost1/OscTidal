@@ -31,7 +31,8 @@ public:
 		{"green", -1},
 		{"blue", -1},
 		{"primres", 6},
-		{"boundary", 255},
+		{"boundMin", 0},
+		{"boundMax", 255},
 		{"z", 0},
 		{"rotateX", 0},
 		{"rotateY", 0},
@@ -47,7 +48,8 @@ public:
 
 	map<string, float> defaultFloatParams{
 		{"gain", 1.0},
-		{"amount", 1.0}
+		{"amt", 1.0},
+		{"length", 0.95}
 	};
 
 };

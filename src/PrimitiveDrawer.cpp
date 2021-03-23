@@ -11,6 +11,8 @@ void PrimitiveDrawer::setup() {
 	mat.setAmbientColor(color);
 	mat.setSpecularColor(color);
 	mat.setShininess(155);
+
+	model.loadModel("models/david2.obj");
 }
 
 void PrimitiveDrawer::update(const basePixel& basePixel) {
@@ -38,9 +40,10 @@ void PrimitiveDrawer::draw(const basePixel& basePixel) {
 	else { ofNoFill(); }
 
 	float alpha = static_cast<int>(basePixel.triggerValue);
-	if (alpha > 1) {
-		switch (basePixel.mode) {
-		case 0:
+
+	switch (basePixel.mode) {
+	case 0:
+		if (alpha > 1) {
 			ofSetColor(color, alpha);
 			ofTranslate((basePixel.size / basePixel.dimension) / 2, (basePixel.size / basePixel.dimension) / 2, basePixel.z);
 
@@ -60,8 +63,10 @@ void PrimitiveDrawer::draw(const basePixel& basePixel) {
 				ofRotateXDeg(-90);
 				ofDrawCylinder(ofPoint(0, 0, 0), basePixel.size / basePixel.dimension, basePixel.size / basePixel.dimension);
 			}
-			break;
-		case 1:
+		}
+		break;
+	case 1:
+		if (alpha > 1) {
 			ofTranslate((basePixel.size / basePixel.dimension) / 2, (basePixel.size / basePixel.dimension) / 2, basePixel.z);
 			ofRotateXDeg(basePixel.rotationX*ofGetElapsedTimef());
 			ofRotateYDeg(basePixel.rotationY*ofGetElapsedTimef());
@@ -80,32 +85,33 @@ void PrimitiveDrawer::draw(const basePixel& basePixel) {
 				ofDrawCylinder(ofPoint(0, 0, 0), ofMap(alpha, 0, 255, 0, basePixel.boundaryMax), ofMap(alpha, 0, 255, 0, basePixel.boundaryMax));
 			}
 			mat.end();
-			break;
-		case 2:
-			ofTranslate(0, 0, basePixel.z);
-			ofRotateXDeg(basePixel.rotationX*ofGetElapsedTimef());
-			ofRotateYDeg(basePixel.rotationY*ofGetElapsedTimef());
-			ofRotateZDeg(basePixel.rotationZ*ofGetElapsedTimef());
-			drawPrimitive(basePixel, -90, alpha);
-			break;
-		case 3:
-			ofTranslate((basePixel.size / basePixel.dimension) / 2, (basePixel.size / basePixel.dimension) / 2, ofMap(alpha, 0, 255, 0, basePixel.boundaryMax) / 2 + basePixel.z);
-			ofRotateXDeg(basePixel.rotationX*ofGetElapsedTimef());
-			ofRotateYDeg(basePixel.rotationY*ofGetElapsedTimef());
-			ofRotateZDeg(basePixel.rotationZ*ofGetElapsedTimef());
-			drawPrimitive(basePixel, -90, alpha);
-			break;
-		case 4:
-			ofTranslate((basePixel.size / basePixel.dimension) / 2, (basePixel.size / basePixel.dimension) / 2, ofMap(alpha, 0, 255, 0, -basePixel.boundaryMax) / 2 + basePixel.z);
-			ofRotateXDeg(basePixel.rotationX*ofGetElapsedTimef());
-			ofRotateYDeg(basePixel.rotationY*ofGetElapsedTimef());
-			ofRotateZDeg(basePixel.rotationZ*ofGetElapsedTimef());
-			drawPrimitive(basePixel, 90, alpha);
-			break;
-		default:
-			cout << "default mode triggered\n";
-			break;
 		}
+		break;
+
+	case 2:
+		ofTranslate(0, 0, basePixel.z);
+		ofRotateXDeg(basePixel.rotationX*ofGetElapsedTimef());
+		ofRotateYDeg(basePixel.rotationY*ofGetElapsedTimef());
+		ofRotateZDeg(basePixel.rotationZ*ofGetElapsedTimef());
+		drawPrimitive(basePixel, -90);
+		break;
+	case 3:
+		ofTranslate((basePixel.size / basePixel.dimension) / 2, (basePixel.size / basePixel.dimension) / 2, ofMap(alpha, 0, 255, 0, basePixel.boundaryMax) / 2 + basePixel.z);
+		ofRotateXDeg(basePixel.rotationX*ofGetElapsedTimef());
+		ofRotateYDeg(basePixel.rotationY*ofGetElapsedTimef());
+		ofRotateZDeg(basePixel.rotationZ*ofGetElapsedTimef());
+		drawPrimitive(basePixel, -90);
+		break;
+	case 4:
+		ofTranslate((basePixel.size / basePixel.dimension) / 2, (basePixel.size / basePixel.dimension) / 2, ofMap(alpha, 0, 255, 0, -basePixel.boundaryMax) / 2 + basePixel.z);
+		ofRotateXDeg(basePixel.rotationX*ofGetElapsedTimef());
+		ofRotateYDeg(basePixel.rotationY*ofGetElapsedTimef());
+		ofRotateZDeg(basePixel.rotationZ*ofGetElapsedTimef());
+		drawPrimitive(basePixel, 90);
+		break;
+	default:
+		cout << "default mode triggered\n";
+		break;
 	}
 }
 
@@ -123,21 +129,37 @@ bool PrimitiveDrawer::isNewSetup(const basePixel& basePixel) {
 	}
 }
 
-void PrimitiveDrawer::drawPrimitive(const basePixel& basePixel, float initRot, int alpha) {
-	mat.begin();
-	if (primitive == "box") {
-		ofDrawBox(ofPoint(0, 0, 0), basePixel.size / basePixel.dimension + 1, basePixel.size / basePixel.dimension + 1, ofMap(alpha, 0, 255, 0, basePixel.boundaryMax));
+void PrimitiveDrawer::drawPrimitive(const basePixel& basePixel, float initRot) {
+	if (basePixel.triggerValue > 1) {
+		
+		if (primitive == "box") {
+			mat.begin();
+			ofDrawBox(ofPoint(0, 0, 0), basePixel.size / basePixel.dimension + 1, basePixel.size / basePixel.dimension + 1, basePixel.triggerValue);
+			mat.end();
+		}
+		else if (primitive == "cone") {
+			mat.begin();
+			ofRotateXDeg(initRot);
+			ofDrawCone(ofPoint(0, 0, 0), basePixel.size / basePixel.dimension + 1, basePixel.triggerValue);
+			mat.end();
+		}
+		else if (primitive == "cylinder") {
+			mat.begin();
+			ofRotateXDeg(initRot);
+			ofDrawCylinder(ofPoint(0, 0, 0), basePixel.size / basePixel.dimension + 1, basePixel.triggerValue);
+			mat.end();
+		}
+		else if (primitive == "sphere") {
+			mat.begin();
+			ofDrawSphere(basePixel.triggerValue);
+			mat.end();
+		}
+		else if (primitive == "model") {
+			//model.setPosition(0, 0, 0);
+			float scale = ofMap(basePixel.triggerValue, basePixel.boundayMin, basePixel.boundaryMax, 0, -1);
+			model.setScale(scale, scale, scale);
+			model.setRotation(0,0, basePixel.rotationX, basePixel.rotationY, basePixel.rotationZ);
+			model.drawFaces();
+		}
 	}
-	else if (primitive == "cone") {
-		ofRotateXDeg(initRot);
-		ofDrawCone(ofPoint(0, 0, 0), basePixel.size / basePixel.dimension + 1, ofMap(alpha, 0, 255, 0, basePixel.boundaryMax));
-	}
-	else if (primitive == "cylinder") {
-		ofRotateXDeg(initRot);
-		ofDrawCylinder(ofPoint(0, 0, 0), basePixel.size / basePixel.dimension + 1, ofMap(alpha, 0, 255, 0, basePixel.boundaryMax));
-	}
-	else if (primitive == "sphere") {
-		ofDrawSphere(ofMap(alpha, 0, 255, 0, basePixel.boundaryMax));
-	}
-	mat.end();
 }

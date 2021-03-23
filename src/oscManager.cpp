@@ -21,17 +21,17 @@ void oscManager::receiveParams(map<string, string> params) {
 	}
 
 	for (const auto& kv : defaultFloatParams) {
-		floatParams.insert(pair<string, float>(kv.first, matchParam(params, kv.first, kv.second)));
+		floatParams.insert(pair<string, float>(kv.first, matchParamf(params, kv.first, kv.second)));
 	}
 	
 	string targetSystem = matchParam(params, "sys", "grid");
 	string type = matchParam(params, "type", "circle");
 	string color = matchParam(params, "color", "white");
 	int target = matchParam(params, "target", 0);
-	float gain = matchParamf(params, "gain", 1.0);
+	//float gain = matchParamf(params, "gain", 1.0);
 
 	// TODO: this must be temporary!!!
-	float amount = ofMap(gain, 0, 1, 0, 255);
+	//float amount = ofMap(gain, 0, 1, 0, 255);
 
 	if (targetSystem == "grid") {
 		if (type == "circle") {
@@ -40,7 +40,7 @@ void oscManager::receiveParams(map<string, string> params) {
 				triggerParams["rad"],
 				triggerParams["x"],
 				triggerParams["y"],
-				amount,
+				floatParams,
 				intParams,
 				stringParams
 			);
@@ -51,7 +51,7 @@ void oscManager::receiveParams(map<string, string> params) {
 				triggerParams["rad2"],
 				triggerParams["x"],
 				triggerParams["y"],
-				amount,
+				floatParams,
 				intParams,
 				stringParams
 			);
@@ -61,7 +61,7 @@ void oscManager::receiveParams(map<string, string> params) {
 				triggerParams["x"],
 				triggerParams["y"],
 				triggerParams["rad"],
-				amount,
+				floatParams,
 				intParams,
 				stringParams
 			);
@@ -71,7 +71,7 @@ void oscManager::receiveParams(map<string, string> params) {
 				triggerParams["x"],
 				triggerParams["y"],
 				triggerParams["rad"],
-				amount,
+				floatParams,
 				intParams,
 				stringParams
 			);

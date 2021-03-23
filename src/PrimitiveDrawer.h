@@ -1,6 +1,7 @@
 #pragma once
 #ifndef _PRIMITIVEDRAWER
 #define _PRIMITIVEDRAWER
+#include "ofxAssimpModelLoader.h"
 #include "ofMain.h"
 
 class PrimitiveDrawer
@@ -18,7 +19,7 @@ public:
 		int primitiveResolution = 6;
 		float z = 0;
 		float triggerValue = 0;
-		float decay = 0.95;
+		float length = 0.95;
 		bool fill = true;
 		bool updating = true;
 		string primitive = "box";
@@ -28,7 +29,7 @@ public:
 	void setup();
 	void update(const basePixel& basePixel);
 	void draw(const basePixel& basePixel);
-	void drawPrimitive(const basePixel& basePixel, float initRot, int alpha);
+	void drawPrimitive(const basePixel& basePixel, float initRot);
 	bool isNewSetup(const basePixel& basePixel);
 
 string primitive;
@@ -36,6 +37,7 @@ int primitiveResolution;
 ofColor color;
 ofMaterial mat;
 bool fill;
+ofxAssimpModelLoader model;
 
 PrimitiveDrawer();
 
