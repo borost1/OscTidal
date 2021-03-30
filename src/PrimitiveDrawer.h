@@ -30,6 +30,7 @@ public:
 	void update(const basePixel& basePixel);
 	void draw(const basePixel& basePixel);
 	void drawPrimitive(const basePixel& basePixel, float initRot);
+	void drawModel(const basePixel& basePixel);
 	bool isNewSetup(const basePixel& basePixel);
 
 string primitive;
